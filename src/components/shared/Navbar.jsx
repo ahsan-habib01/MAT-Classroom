@@ -3,12 +3,12 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useSession, signOut } from 'next-auth/react';
+import { useAuth } from '../../context/AuthContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const { data: session, status } = useSession();
+  const { user, loading, logout } = useAuth();
 
   return (
     <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-gray-100">
@@ -103,18 +103,18 @@ export default function Navbar() {
               </svg>
             </button>
 
-            {status === 'loading' ? (
+            {loading ? (
               <div className="w-10 h-10 rounded-full bg-gray-200 animate-pulse"></div>
-            ) : session?.user ? (
+            ) : user ? (
               <div className="relative">
                 <button
                   onClick={() => setIsProfileOpen(!isProfileOpen)}
                   className="flex items-center gap-2 focus:outline-none"
                 >
                   <div className="w-10 h-10 rounded-full overflow-hidden border-2 border-primary">
-                    {session.user.image ? (
+                    {user.image ? (
                       <Image
-                        src={session.user.image}
+                        src={user.image}
                         alt="Profile"
                         width={40}
                         height={40}
@@ -122,7 +122,7 @@ export default function Navbar() {
                       />
                     ) : (
                       <div className="w-full h-full bg-primary text-white flex items-center justify-center font-bold text-lg">
-                        {session.user.name?.charAt(0).toUpperCase() || 'U'}
+                        {user.name?.charAt(0).toUpperCase() || 'U'}
                       </div>
                     )}
                   </div>
@@ -132,10 +132,10 @@ export default function Navbar() {
                   <div className="absolute right-0 mt-3 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-100 z-50">
                     <div className="px-4 py-2 border-b border-gray-100">
                       <p className="text-sm font-medium text-gray-900 truncate">
-                        {session.user.name}
+                        {user.name}
                       </p>
                       <p className="text-xs text-gray-500 truncate">
-                        {session.user.email}
+                        {user.email}
                       </p>
                     </div>
                     <Link
@@ -146,7 +146,7 @@ export default function Navbar() {
                       Dashboard
                     </Link>
                     <button
-                      onClick={() => signOut({ callbackUrl: '/' })}
+                      onClick={() => logout()}
                       className="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-50 transition-colors"
                     >
                       Sign out
@@ -259,16 +259,16 @@ export default function Navbar() {
               Contact
             </Link>
             <div className="pt-4 mt-2 border-t border-gray-100 flex flex-col gap-3">
-              {status === 'loading' ? (
+              {loading ? (
                 <div className="w-full h-10 bg-gray-200 animate-pulse rounded-md" />
-              ) : session?.user ? (
+              ) : user ? (
                 <>
                   <div className="px-3 py-2 bg-gray-50 rounded-md">
                     <p className="font-medium text-gray-900 truncate">
-                      {session.user.name}
+                      {user.name}
                     </p>
                     <p className="text-sm text-gray-500 truncate">
-                      {session.user.email}
+                      {user.email}
                     </p>
                   </div>
                   <Link
@@ -279,7 +279,7 @@ export default function Navbar() {
                     Dashboard
                   </Link>
                   <button
-                    onClick={() => signOut({ callbackUrl: '/' })}
+                    onClick={() => logout()}
                     className="block w-full text-center bg-red-50 text-red-600 py-2.5 rounded-md font-medium"
                   >
                     Sign out

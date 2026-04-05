@@ -2,7 +2,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { signIn } from 'next-auth/react';
+import { useAuth } from '../../context/AuthContext';
+import { GoogleLogin } from '@react-oauth/google';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -11,6 +12,7 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
+  const { register, googleLogin } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async e => {
@@ -25,35 +27,10 @@ export default function RegisterPage() {
     }
 
     try {
-      const res = await fetch('/api/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ name, email, password }),
-      });
+      const res = await register(name, email, password);
 
-      if (res.ok) {
-        const form = e.target;
-        form.reset();
-
-        // Auto sign-in the user after successful registration
-        const authRes = await signIn('credentials', {
-          email,
-          password,
-          redirect: false,
-        });
-
-        if (authRes?.error) {
-          setError(
-            'Account created, but auto-login failed. Please manually log in.',
-          );
-        } else {
-          router.push('/');
-        }
-      } else {
-        const data = await res.json();
-        setError(data.message || 'Registration failed');
+      if (!res.success) {
+        setError(res.message || 'Registration failed');
       }
     } catch (error) {
       console.log('Error during registration: ', error);
@@ -185,25 +162,18 @@ export default function RegisterPage() {
               </div>
             </div>
 
-            <div className="mt-6">
-              <button
-                onClick={() => signIn('google', { callbackUrl: '/' })}
-                type="button"
-                className="w-full flex items-center justify-center py-2.5 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition"
-              >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M12.48 10.92v3.28h7.84c-.24 1.84-.853 3.187-1.787 4.133-1.147 1.147-2.933 2.4-6.053 2.4-4.827 0-8.6-3.893-8.6-8.72s3.773-8.72 8.6-8.72c2.6 0 4.507 1.027 5.907 2.347l2.307-2.307C18.747 1.44 16.133 0 12.48 0 5.867 0 .307 5.387.307 12s5.56 12 12.173 12c3.573 0 6.267-1.173 8.373-3.36 2.16-2.16 2.84-5.213 2.84-7.667 0-.76-.053-1.467-.173-2.053H12.48z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                Sign up with Google
-              </button>
+            <div className="mt-6 flex justify-center">
+              <GoogleLogin
+                onSuccess={async credentialResponse => {
+                  const res = await googleLogin(credentialResponse);
+                  if (!res.success) {
+                    setError(res.message);
+                  }
+                }}
+                onError={() => {
+                  setError('Google Login Failed');
+                }}
+              />
             </div>
           </div>
         </div>

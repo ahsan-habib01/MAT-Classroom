@@ -1,9 +1,6 @@
-import NextAuth from 'next-auth';
+import NextAuth from 'next-auth/next';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
-import { connectMongoDB } from '@/lib/mongodb';
-import User from '@/models/User';
-import bcrypt from 'bcryptjs';
 
 export const authOptions = {
   providers: [
@@ -18,27 +15,24 @@ export const authOptions = {
         const { email, password } = credentials;
 
         try {
-          await connectMongoDB();
-          const user = await User.findOne({ email });
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/users/login`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, password }),
+            },
+          );
 
-          if (!user) {
-            return null;
+          const user = await res.json();
+
+          if (res.ok && user) {
+            return user;
+          } else {
+            throw new Error(user.message || 'Invalid email or password');
           }
-
-          if (!user.password) {
-            // User exists, but registered via Google previously. No password to check.
-            throw new Error('Please log in with Google.');
-          }
-
-          const passwordsMatch = await bcrypt.compare(password, user.password);
-
-          if (!passwordsMatch) {
-            return null;
-          }
-
-          return user;
         } catch (error) {
-          console.log('Error: ', error);
+          console.error('Error: ', error);
           if (error.message) {
             throw error;
           }
@@ -49,18 +43,23 @@ export const authOptions = {
   ],
   callbacks: {
     async signIn({ user, account }) {
-      // If user logs in with Google, save them to DB if they don't exist
       if (account.provider === 'google') {
         try {
           const { name, email } = user;
-          await connectMongoDB();
-          const userExists = await User.findOne({ email });
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/users/google`,
+            {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name, email }),
+            },
+          );
 
-          if (!userExists) {
-            await User.create({ name, email });
+          if (!res.ok) {
+            return false;
           }
         } catch (error) {
-          console.log('Error saving Google user: ', error);
+          console.error('Error saving Google user: ', error);
           return false;
         }
       }
