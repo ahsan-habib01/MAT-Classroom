@@ -4,13 +4,16 @@ export async function POST(req) {
   try {
     const { name, email, password } = await req.json();
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/users/register`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/users/register`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
       },
-      body: JSON.stringify({ name, email, password }),
-    });
+    );
 
     const data = await res.json();
 
@@ -21,7 +24,10 @@ export async function POST(req) {
       );
     } else {
       return NextResponse.json(
-        { message: data.message || 'An error occurred while registering the user.' },
+        {
+          message:
+            data.message || 'An error occurred while registering the user.',
+        },
         { status: res.status },
       );
     }
