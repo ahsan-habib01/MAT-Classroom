@@ -36,7 +36,7 @@ export default function RegisterPage() {
       if (res.ok) {
         const form = e.target;
         form.reset();
-        
+
         // Auto sign-in the user after successful registration
         const authRes = await signIn('credentials', {
           email,
@@ -45,7 +45,9 @@ export default function RegisterPage() {
         });
 
         if (authRes?.error) {
-          setError('Account created, but auto-login failed. Please manually log in.');
+          setError(
+            'Account created, but auto-login failed. Please manually log in.',
+          );
         } else {
           router.push('/');
         }
