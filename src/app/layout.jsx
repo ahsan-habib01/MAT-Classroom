@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono, Hind_Siliguri } from 'next/font/google';
 import Navbar from '@/components/shared/Navbar';
 import Footer from '@/components/shared/Footer';
+import FloatingContact from '@/components/shared/FloatingContact';
 import { AuthProvider } from './Providers';
 import './globals.css';
 
@@ -40,6 +41,7 @@ export default function RootLayout({ children }) {
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <FloatingContact />
         </AuthProvider>
       </body>
     </html>

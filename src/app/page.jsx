@@ -8,8 +8,8 @@ import CoursesSection from '@/components/home/CoursesSection';
 export default function Home() {
   return (
     <div className="flex flex-col min-h-screen">
-      <HeroSection />
-      <FeaturesSection />
+      <HeroSection/>
+      {/* <FeaturesSection /> */}
       <AboutSection />
       <CategoriesSection />
       <CoursesSection />

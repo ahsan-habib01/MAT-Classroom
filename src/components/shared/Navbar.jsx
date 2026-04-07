@@ -3,22 +3,32 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useAuth } from '../../context/AuthContext';
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { user, loading, logout } = useAuth();
+  const pathname = usePathname();
+
+  const getLinkClasses = path => {
+    const isActive =
+      path === '/' ? pathname === '/' : pathname.startsWith(path);
+    return isActive
+      ? 'text-[#ff6b00] font-bold border-b-2 border-[#ff6b00] py-1'
+      : 'text-[#0b1a41] hover:text-[#ff6b00] font-semibold transition-colors py-1 border-b-2 border-transparent hover:border-[#ff6b00]/30';
+  };
 
   return (
-    <header className="bg-white sticky top-0 z-50 shadow-sm border-b border-gray-100">
+    <header className="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm border-b border-gray-100">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center gap-2">
             <Link
               href="/"
-              className="flex items-center gap-2 text-2xl font-bold text-gray-900 tracking-tight"
+              className="flex items-center gap-2 text-2xl font-bold text-gray-900 tracking-tight hover:scale-105 transition-transform"
             >
               <Image
                 src="/mat-logo-without-bg.png"
@@ -32,26 +42,17 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
-            <Link
-              href="/"
-              className="text-primary font-medium border-b-2 border-primary py-1"
-            >
+            <Link href="/" className={getLinkClasses('/')}>
               Home
             </Link>
-            <Link
-              href="/about"
-              className="text-gray-600 hover:text-primary font-medium transition-colors"
-            >
+            <Link href="/about" className={getLinkClasses('/about')}>
               About
             </Link>
-            <Link
-              href="/courses"
-              className="text-gray-600 hover:text-primary font-medium transition-colors"
-            >
+            <Link href="/courses" className={getLinkClasses('/courses')}>
               Courses
             </Link>
             <div className="relative group cursor-pointer">
-              <span className="text-gray-600 hover:text-primary font-medium flex items-center gap-1 transition-colors">
+              <span className="text-gray-600 hover:text-primary font-medium flex items-center gap-1 transition-colors py-1 border-b-2 border-transparent hover:border-primary/30">
                 Pages
                 <svg
                   className="w-4 h-4"
@@ -68,16 +69,10 @@ export default function Navbar() {
                 </svg>
               </span>
             </div>
-            <Link
-              href="/news"
-              className="text-gray-600 hover:text-primary font-medium transition-colors"
-            >
+            <Link href="/news" className={getLinkClasses('/news')}>
               News
             </Link>
-            <Link
-              href="/contact"
-              className="text-gray-600 hover:text-primary font-medium transition-colors"
-            >
+            <Link href="/contact" className={getLinkClasses('/contact')}>
               Contact
             </Link>
           </nav>
@@ -220,41 +215,47 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="lg:hidden bg-white border-t border-gray-100 shadow-xl absolute w-full left-0">
+        <div className="lg:hidden bg-white/95 backdrop-blur-md border-t border-gray-100 shadow-xl absolute w-full left-0 animate-fade-in">
           <div className="px-4 pt-2 pb-6 space-y-2">
             <Link
               href="/"
-              className="block px-3 py-2 text-primary font-medium bg-blue-50 rounded-md"
+              className={`block px-3 py-2 rounded-md font-medium transition-colors ${pathname === '/' ? 'text-primary bg-primary/10' : 'text-gray-700 hover:text-primary hover:bg-gray-50'}`}
+              onClick={() => setIsOpen(false)}
             >
               Home
             </Link>
             <Link
               href="/about"
-              className="block px-3 py-2 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md font-medium"
+              className={`block px-3 py-2 rounded-md font-medium transition-colors ${pathname === '/about' ? 'text-primary bg-primary/10' : 'text-gray-700 hover:text-primary hover:bg-gray-50'}`}
+              onClick={() => setIsOpen(false)}
             >
               About
             </Link>
             <Link
               href="/courses"
-              className="block px-3 py-2 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md font-medium"
+              className={`block px-3 py-2 rounded-md font-medium transition-colors ${pathname === '/courses' ? 'text-primary bg-primary/10' : 'text-gray-700 hover:text-primary hover:bg-gray-50'}`}
+              onClick={() => setIsOpen(false)}
             >
               Courses
             </Link>
             <Link
               href="/pages"
-              className="block px-3 py-2 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md font-medium"
+              className={`block px-3 py-2 rounded-md font-medium transition-colors ${pathname === '/pages' ? 'text-primary bg-primary/10' : 'text-gray-700 hover:text-primary hover:bg-gray-50'}`}
+              onClick={() => setIsOpen(false)}
             >
               Pages
             </Link>
             <Link
               href="/news"
-              className="block px-3 py-2 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md font-medium"
+              className={`block px-3 py-2 rounded-md font-medium transition-colors ${pathname === '/news' ? 'text-primary bg-primary/10' : 'text-gray-700 hover:text-primary hover:bg-gray-50'}`}
+              onClick={() => setIsOpen(false)}
             >
               News
             </Link>
             <Link
               href="/contact"
-              className="block px-3 py-2 text-gray-700 hover:text-primary hover:bg-gray-50 rounded-md font-medium"
+              className={`block px-3 py-2 rounded-md font-medium transition-colors ${pathname === '/contact' ? 'text-primary bg-primary/10' : 'text-gray-700 hover:text-primary hover:bg-gray-50'}`}
+              onClick={() => setIsOpen(false)}
             >
               Contact
             </Link>
