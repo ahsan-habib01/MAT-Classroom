@@ -1,4 +1,4 @@
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Geist, Geist_Mono, Hind_Siliguri } from 'next/font/google';
 import Navbar from '@/components/shared/Navbar';
 import Footer from '@/components/shared/Footer';
 import { AuthProvider } from './Providers';
@@ -14,6 +14,12 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
+const hindSiliguri = Hind_Siliguri({
+  weight: ['300', '400', '500', '600', '700'],
+  subsets: ['bengali'],
+  variable: '--font-hind-siliguri',
+});
+
 export const metadata = {
   title: 'MAT Classroom | Coaching Excellence',
   description: 'Top-tier academic and professional coaching for exams.',
@@ -23,7 +29,7 @@ export default function RootLayout({ children }) {
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} ${hindSiliguri.variable} h-full antialiased`}
       suppressHydrationWarning
     >
       <body

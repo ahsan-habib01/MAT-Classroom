@@ -1,87 +1,148 @@
 import React from 'react';
-import AboutSection from '@/components/home/AboutSection';
+import Image from 'next/image';
 import Link from 'next/link';
-
-export const metadata = {
-  title: 'About Us | MAT Classroom',
-  description: 'Learn more about MAT Classroom and our mission.',
-};
 
 export default function AboutPage() {
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Mini Breadcrumb Hero for internal pages */}
-      <div className="bg-[#0b1a41] text-white py-16 flex flex-col items-center justify-center relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-64 h-64 bg-primary rounded-full blur-3xl opacity-20"></div>
-        <div className="absolute bottom-0 left-0 w-64 h-64 bg-secondary rounded-full blur-3xl opacity-20"></div>
-
-        <h1 className="text-4xl md:text-5xl font-extrabold z-10 relative">
-          About Us
+    <main className="min-h-screen bg-white font-sans">
+      {/* 1. Hero Section */}
+      <section className="py-16 px-6 text-center max-w-4xl mx-auto">
+        <h1 className="text-3xl md:text-4xl font-bold text-green-600 mb-6">
+          আমরা কারা এবং আমাদের লক্ষ্য কি?
         </h1>
-        <div className="flex items-center gap-2 mt-4 text-sm z-10 relative">
-          <Link
-            href="/"
-            className="text-primary-light hover:text-white transition"
-          >
-            Home
-          </Link>
-          <span className="text-gray-400">/</span>
-          <span className="text-white">About Us</span>
-        </div>
-      </div>
-
-      {/* Embedded the new AboutSection directly into the page */}
-      <div className="my-10">
-        <AboutSection />
-      </div>
-
-      {/* Additional About Details */}
-      <div className="max-w-4xl mx-auto py-10 px-6 sm:px-8 mb-20 bg-gray-50 rounded-3xl shadow-sm border border-gray-100">
-        <h2 className="text-3xl font-extrabold mb-6 text-[#0b1a41] flex items-center gap-3">
-          <span className="w-8 h-1 bg-secondary rounded-full"></span> Our
-          Mission
-        </h2>
-        <p className="bg-white p-8 rounded-2xl border-l-4 border-primary text-gray-700 text-lg leading-relaxed shadow-sm italic font-medium">
-          "To empower students with the knowledge, skills, and confidence
-          required to excel in their academic and professional journeys,
-          fostering a lifelong love for learning."
+        <p className="text-gray-700 text-lg leading-relaxed">
+          MAT Classroom (ম্যাট ক্লাসরুম) বাংলাদেশের সকল শিক্ষার্থীর জন্য একটি
+          নির্ভরযোগ্য অনলাইন ও অফলাইন এডুকেশন প্ল্যাটফর্ম। আমাদের মূল লক্ষ্য হলো
+          শিক্ষার্থীদের জন্য মানসম্মত শিক্ষা ও রিসোর্স সহজলভ্য করা।
         </p>
+      </section>
 
-        <h2 className="text-3xl font-extrabold mt-12 mb-6 text-[#0b1a41] flex items-center gap-3">
-          <span className="w-8 h-1 bg-secondary rounded-full"></span> Why Learn
-          With Us?
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {[
-            'Experiential learning methods beyond rote memorization.',
-            'Regular performance tracking and detailed feedback.',
-            'Dedicated mentorship and counseling sessions.',
-            'State-of-the-art classroom facilities (offline/online).',
-          ].map((item, idx) => (
-            <div
-              key={idx}
-              className="flex items-start gap-4 bg-white p-4 rounded-xl shadow-sm border border-gray-50 hover:shadow-md transition"
-            >
-              <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 mt-1">
-                <svg
-                  className="w-4 h-4 text-primary font-bold"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={3}
-                    d="M5 13l4 4L19 7"
-                  />
-                </svg>
-              </div>
-              <p className="text-gray-700 font-medium">{item}</p>
-            </div>
-          ))}
+      {/* 2. Mission & Vision Cards */}
+      <section className="max-w-6xl mx-auto px-6 grid md:grid-cols-2 gap-8 mb-20">
+        {/* Mission Card */}
+        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-start">
+          <div className="bg-pink-100 p-3 rounded-full mb-4">🎯</div>
+          <h3 className="text-xl font-bold text-gray-800 mb-3">
+            আমাদের লক্ষ্য (Our Mission)
+          </h3>
+          <p className="text-gray-600 leading-relaxed">
+            আমাদের লক্ষ্য হলো শিক্ষার্থীদের জন্য প্রতিটি বিষয়ের কঠিন টপিকগুলো
+            সহজভাবে উপস্থাপন করা এবং পরীক্ষার জন্য সর্বোত্তম প্রস্তুতি নিশ্চিত
+            করা। আমরা স্বল্প খরচে সেরা মানের কোর্স, বই এবং সাপোর্ট দিয়ে থাকি।
+          </p>
         </div>
-      </div>
+
+        {/* Vision Card */}
+        <div className="bg-white p-8 rounded-2xl shadow-sm border border-gray-100 flex flex-col items-start">
+          <div className="bg-red-100 p-3 rounded-full mb-4">👁️‍🗨️</div>
+          <h3 className="text-xl font-bold text-gray-800 mb-3">
+            আমাদের উদ্দেশ্য (Our Vision)
+          </h3>
+          <p className="text-gray-600 leading-relaxed">
+            আমরা এমন একটি শিক্ষা ব্যবস্থা তৈরি করতে চাই যেখানে ভৌগোলিক অবস্থান
+            বা আর্থিক অবস্থা কোনো শিক্ষার্থীর জ্ঞান অর্জনের পথে বাধা হবে না।
+            প্রযুক্তির সাহায্যে দেশের প্রতিটি প্রান্তে মানসম্মত শিক্ষা পৌঁছে
+            দেওয়াই আমাদের স্বপ্ন।
+          </p>
+        </div>
+      </section>
+
+      {/* 3. Founder / Owner Quote Section */}
+      <section className="max-w-5xl mx-auto px-6 mb-24">
+        <div className="bg-gray-50 rounded-3xl p-8 md:p-12 flex flex-col md:flex-row items-center gap-10">
+          <div className="w-40 h-40 bg-gray-200 rounded-full flex-shrink-0 flex items-center justify-center text-gray-400 border-4 border-white shadow-sm overflow-hidden">
+            {/* Replace with <Image /> when ready */}
+            <span className="text-sm">Owner Picture</span>
+          </div>
+          <div className="text-center md:text-left">
+            <h2 className="text-2xl font-bold text-gray-800">
+              মোঃ মোবাশ্বের আলী
+            </h2>
+            <p className="text-blue-600 font-medium mb-4 text-sm">
+              প্রতিষ্ঠাতা ও পরিচালক, ম্যাট ক্লাসরুম
+            </p>
+            <p className="text-gray-700 italic leading-relaxed text-lg">
+              "আমি বিশ্বাস করি, সঠিক গাইডলাইন ও রিসোর্স পেলে প্রতিটি শিক্ষার্থীই
+              অসাধারণ ফলাফল করতে পারে। এই বিশ্বাস থেকেই ম্যাট ক্লাসরুমের পথচলা
+              শুরু। আমাদের লক্ষ্য হলো, প্রতিটি শিক্ষার্থীর কাছে গণিতের মতো কঠিন
+              বিষয়কে সহজ ও আনন্দদায়ক করে তোলা।"
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 4. Features Section */}
+      <section className="max-w-6xl mx-auto px-6 mb-24">
+        <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-12">
+          আমাদের কোর্সসমূহ কেন কিনবেন?
+        </h2>
+
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Video Placeholder */}
+          <div className="aspect-video bg-black rounded-2xl flex items-center justify-center text-white relative overflow-hidden group cursor-pointer">
+            <div className="z-10 text-center">
+              <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2 backdrop-blur-md group-hover:scale-110 transition-transform">
+                <div className="w-0 h-0 border-t-[10px] border-t-transparent border-l-[18px] border-l-white border-b-[10px] border-b-transparent ml-1"></div>
+              </div>
+              <p className="font-medium">Promo Video Here</p>
+            </div>
+          </div>
+
+          {/* Feature Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <FeatureCard
+              icon="🎓"
+              title="এক্সপার্ট শিক্ষক"
+              desc="অভিজ্ঞ ও দক্ষ শিক্ষকদের দ্বারা ক্লাস পরিচালনা।"
+            />
+            <FeatureCard
+              icon="🎧"
+              title="লাইভ সাপোর্ট"
+              desc="২৪/৭ লাইভ সাপোর্ট ও কমিউনিটি সুবিধা।"
+            />
+            <FeatureCard
+              icon="📝"
+              title="নিয়মিত পরীক্ষা"
+              desc="অভিজ্ঞ শিক্ষকদের দ্বারা নিয়মিত পরীক্ষা গ্রহণ ও ফলাফল প্রদান।"
+            />
+            <FeatureCard
+              icon="📖"
+              title="সহজ ভাষা"
+              desc="সহজ ভাষায় ও উদাহরণসহ ব্যাখ্যা।"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* 5. CTA Banner Section */}
+      <section className="max-w-6xl mx-auto px-6 mb-16">
+        <div className="bg-[#4E4FB0] rounded-3xl p-10 text-center text-white">
+          <h2 className="text-2xl md:text-3xl font-bold mb-4">
+            আমাদের সাথে আপনার শেখার যাত্রা শুরু করুন
+          </h2>
+          <p className="text-blue-100 mb-8 max-w-2xl mx-auto">
+            আপনার পছন্দের কোর্সটি বেছে নিন এবং আপনার ক্যারিয়ারে এক নতুন মাত্রা
+            যোগ করুন। আমরা আছি আপনার সফলতার প্রতিটি ধাপে।
+          </p>
+          <Link
+            href="/courses"
+            className="inline-block bg-white text-[#4E4FB0] px-8 py-3 rounded-full font-bold hover:bg-gray-100 transition-colors"
+          >
+            সকল কোর্স দেখুন →
+          </Link>
+        </div>
+      </section>
+    </main>
+  );
+}
+
+// Reusable Feature Card Component
+function FeatureCard({ icon, title, desc }) {
+  return (
+    <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+      <div className="text-2xl mb-3">{icon}</div>
+      <h4 className="font-bold text-gray-800 mb-1">{title}</h4>
+      <p className="text-sm text-gray-600 leading-snug">{desc}</p>
     </div>
   );
 }
