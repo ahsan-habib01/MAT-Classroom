@@ -15,16 +15,25 @@ const authOptions = {
         const { email, password } = credentials;
 
         try {
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/users/login`,
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ email, password }),
-            },
-          );
+          const rawApiUrl =
+            process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+          const API_URL = rawApiUrl.endsWith('/api')
+            ? rawApiUrl
+            : `${rawApiUrl}/api`;
+          const res = await fetch(`${API_URL}/users/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+          });
 
-          const user = await res.json();
+          const text = await res.text();
+          let user;
+          try {
+            user = JSON.parse(text);
+          } catch (e) {
+            console.error('Non-JSON response:', text);
+            throw new Error('Server error');
+          }
 
           if (res.ok && user) {
             return user;
@@ -46,16 +55,21 @@ const authOptions = {
       if (account.provider === 'google') {
         try {
           const { name, email } = user;
-          const res = await fetch(
-            `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000'}/api/users/google`,
-            {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ name, email }),
-            },
-          );
+          const rawApiUrl =
+            process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+          const API_URL = rawApiUrl.endsWith('/api')
+            ? rawApiUrl
+            : `${rawApiUrl}/api`;
+
+          const res = await fetch(`${API_URL}/users/google`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email }),
+          });
 
           if (!res.ok) {
+            const text = await res.text();
+            console.error('API Error Response:', text);
             return false;
           }
         } catch (error) {

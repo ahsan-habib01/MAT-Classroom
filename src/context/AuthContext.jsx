@@ -13,8 +13,9 @@ export const AuthProviderContext = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  const API_URL =
+  const rawApiUrl =
     process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+  const API_URL = rawApiUrl.endsWith('/api') ? rawApiUrl : `${rawApiUrl}/api`;
 
   useEffect(() => {
     // Check if user is logged in on app load
@@ -35,7 +36,14 @@ export const AuthProviderContext = ({ children }) => {
         body: JSON.stringify({ email, password }),
       });
 
-      const data = await res.json();
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        console.error('Non-JSON response:', text); // 🔥 will show real error
+        return { success: false, message: 'Server error: Invalid response' };
+      }
 
       if (res.ok) {
         setUser(data);
@@ -61,7 +69,14 @@ export const AuthProviderContext = ({ children }) => {
         body: JSON.stringify({ name, email, password }),
       });
 
-      const data = await res.json();
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        console.error('Non-JSON response:', text); // 🔥 will show real error
+        return { success: false, message: 'Server error: Invalid response' };
+      }
 
       if (res.ok) {
         setUser(data); // Log user in immediately after registering
@@ -92,7 +107,14 @@ export const AuthProviderContext = ({ children }) => {
         body: JSON.stringify({ email, name, image: picture }),
       });
 
-      const data = await res.json();
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (err) {
+        console.error('Google API non-JSON response:', text); // 🔥 will show real error
+        return { success: false, message: 'Server error: Invalid response' };
+      }
 
       if (res.ok) {
         setUser(data);
